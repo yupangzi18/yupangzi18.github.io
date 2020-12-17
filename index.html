@@ -3,7 +3,185 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-12-16T13:35:44.000Z" title="2020-12-16T13:35:44.000Z">2020-12-16</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-12-17T04:19:37.157Z" title="2020-12-17T04:19:37.157Z">2020-12-17</time></span><span class="level-item"><a class="link-muted" href="/categories/CSAPP/">CSAPP</a></span><span class="level-item">a few seconds read (About 71 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/csapp-integer-and-float/index.html">CSAPP - Integer and Float</a></h1><div class="content"><h1 id="Integer-Representation"><a href="#Integer-Representation" class="headerlink" title="Integer Representation"></a>Integer Representation</h1><ul>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-12-17T04:22:54.000Z" title="2020-12-17T04:22:54.000Z">2020-12-17</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-12-17T04:31:32.787Z" title="2020-12-17T04:31:32.787Z">2020-12-17</time></span><span class="level-item"><a class="link-muted" href="/categories/CSAPP/">CSAPP</a></span><span class="level-item">4 minutes read (About 554 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/csapp-machine-level-programming/index.html">CSAPP - Machine Level Programming</a></h1><div class="content"><h1 id="x86-64"><a href="#x86-64" class="headerlink" title="x86-64"></a>x86-64</h1><ul>
+<li>History<ul>
+<li>8086 -&gt; 386 -&gt; Pentium 4E -&gt; Core 2 -&gt; Core i7</li>
+<li>IA32 -&gt; x86-64</li>
+<li>CISC architecture</li>
+<li>Case study: Core-i7 6700K Skylake<ul>
+<li>Shared L3 cache (LLC)</li>
+<li>Hyper-Threading: Shared caches, buses &amp; ALUs<br><img src="/images/corei7.png" width="80%"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Registers  <ul>
+<li>Can reference low-order 4 bytes (backwards compatibility)</li>
+<li><code>%rsp</code> is stack top, others are general-purpose<br><img src="/images/registers.png" width="80%">  </li>
+<li><code>%rip</code> is instruction pointer (not listed)  </li>
+<li>A register for implicitly-set condition codes</li>
+</ul>
+</li>
+</ul>
+<h1 id="Machine-Level-Programming"><a href="#Machine-Level-Programming" class="headerlink" title="Machine Level Programming"></a>Machine Level Programming</h1><h2 id="Addressing-modes"><a href="#Addressing-modes" class="headerlink" title="Addressing modes"></a>Addressing modes</h2><ul>
+<li>Normal: <code>(R)</code> -&gt; <code>Mem[Reg[R]]</code></li>
+<li>Displacement: <code>D(R)</code> -&gt; <code>Mem[Reg[R] + D]</code></li>
+<li>Complete: <code>D(Rb,Ri,S)</code> -&gt; <code>Mem[Reg[Rb] + S*Reg[Ri] + D]</code><ul>
+<li><code>(Rb,Ri)</code> -&gt; <code>Mem[Reg[Rb] + Reg[Ri]]</code></li>
+<li><code>D(Rb,Ri)</code> -&gt; <code>Mem[Reg[Rb] + Reg[Ri] + D]</code></li>
+<li><code>(Rb,Ri,S)</code> -&gt; <code>Mem[Reg[Rb] + S*Reg[Ri]]</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Some-instructions"><a href="#Some-instructions" class="headerlink" title="Some instructions"></a>Some instructions</h2><ul>
+<li><code>movq Src, Dst</code><ul>
+<li>Cannot do memory-memory transfer with a single instruction</li>
+<li>Intel docs use <code>mov Dst, Src</code></li>
+</ul>
+</li>
+<li><code>leaq Src, Dst</code><ul>
+<li>Src is address mode expression, set Dst to address denoted by expression</li>
+<li>Similar to <code>p = &amp;x[i]</code></li>
+<li>Used for arithmetics for form like <code>x + k * y</code></li>
+<li>Does not change condition codes</li>
+</ul>
+</li>
+<li><code>addq/subq Src, Dst</code></li>
+<li><code>imulq Src, Dst</code></li>
+<li><code>salq/sarq/shrq Src, Dst</code></li>
+<li><code>xorq/andq/orq Src, Dst</code></li>
+<li><code>pushq src</code></li>
+<li><code>popq dest</code></li>
+<li><code>incr dest</code></li>
+</ul>
+<h2 id="Compiler-Assembler-Linker-amp-Loader"><a href="#Compiler-Assembler-Linker-amp-Loader" class="headerlink" title="Compiler, Assembler, Linker &amp; Loader"></a>Compiler, Assembler, Linker &amp; Loader</h2><ol>
+<li>Compiler<ul>
+<li>Translates C files (.c) into assembly files (.s)</li>
+</ul>
+</li>
+<li>Assembler<ul>
+<li>Translates assembly files (.s) into object files (.o)</li>
+<li>Missing linkage between compilation units</li>
+</ul>
+</li>
+<li>Linker<ul>
+<li>Resolve references between object files</li>
+<li>Combine with static libraries (malloc, printf, etc)</li>
+</ul>
+</li>
+<li>Dynamic linked libraries<ul>
+<li>Linking occurs at runtime</li>
+<li>Does not take too much disk space<br><img src="/images/compilation.png" width="80%">  </li>
+</ul>
+</li>
+</ol>
+<h2 id="Controls"><a href="#Controls" class="headerlink" title="Controls"></a>Controls</h2><ul>
+<li>Jumping<ul>
+<li><code>jmp</code>, <code>je</code>, <code>jne</code>, <code>js</code> …</li>
+<li>However, branches are very disruptive to instruction flow through pipelines</li>
+</ul>
+</li>
+<li>Conditional moves: <code>cmovle</code><ul>
+<li>Do not require control transfer</li>
+<li>Use <code>-fno-if-conversion</code> flag to supress implicit conversion</li>
+</ul>
+</li>
+<li>Switch statements<ul>
+<li>Jump table structure<br><img src="/images/jump_table.png" width="80%">  </li>
+<li>Make use of “fall through”</li>
+</ul>
+</li>
+</ul>
+<h2 id="Procedures"><a href="#Procedures" class="headerlink" title="Procedures"></a>Procedures</h2><ul>
+<li>Passing control<ul>
+<li>Procedure call: <code>call label</code><ul>
+<li>Push return address into stack</li>
+<li>Jump to label</li>
+</ul>
+</li>
+<li>Procedure return: <code>ret</code><ul>
+<li>Pop return address from stack</li>
+<li>Jump to this address</li>
+</ul>
+</li>
+<li>Return address: Address of next instruction after the call statement</li>
+</ul>
+</li>
+<li>Passing data<ul>
+<li>First 6 arguments: <code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, <code>%r9</code></li>
+<li>Other arguments passed using stack</li>
+<li>Return value: <code>%rax</code></li>
+<li>IA-32 pass all arguments in stack</li>
+<li>Concept of stack frames:<ul>
+<li>Marked by <code>%rbp</code> (optional) and <code>%rsp</code></li>
+<li>No additional mechanism for recursion is needed<br><img src="/images/stack_frame.png" width="80%"></li>
+</ul>
+</li>
+<li>Register saving conditions<ul>
+<li>Caller saved<ul>
+<li><code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%rcx</code>, <code>%r8</code>, <code>%r9</code>, <code>%rax</code>, <code>%r10</code>, <code>%r11</code></li>
+</ul>
+</li>
+<li>Callee saved<ul>
+<li><code>%rbx</code>, <code>%r12</code>, <code>%r13</code>, <code>%r14</code>, <code>%rbp</code></li>
+<li><code>%rsp</code> is also a special form of callee-saved</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Memory management</li>
+<li>ABI: Application Binary Interface</li>
+</ul>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><ol>
+<li>Arrays  <ul>
+<li>1D arrays<br><img src="/images/arrays.png" width="80%">  </li>
+<li>Nested 2D arrays: <code>int A[R][C]</code><br><img src="/images/array_nested.png" width="80%">  </li>
+<li>Multi-level 2D arrays:<br><img src="/images/array_multilevel.png" width="80%">  </li>
+</ul>
+</li>
+<li>Structs<ul>
+<li>Represented as block of memory<br><img src="/images/struct.png" width="80%">  </li>
+<li>Fields are ordered according to declaration</li>
+<li>Alignment:  <ul>
+<li>Within struct: Each element has alignment requirement K, where K is the size of this element<br><img src="/images/alignment.png" width="80%">  </li>
+<li>Overall: Each struct has alignment requirement K, where K is the largest alignment of any element in struct<br><img src="/images/alignment_overall.png" width="80%">  </li>
+<li>To save space, put large data types first</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Float operations<ul>
+<li>Arguments passed in <code>%xmm0</code>, <code>%xmm1</code>, …</li>
+<li>Result returned in <code>%xmm0</code></li>
+<li>Different mov instructions are used to move floats</li>
+</ul>
+</li>
+</ol>
+<h2 id="Address-space"><a href="#Address-space" class="headerlink" title="Address space"></a>Address space</h2><ul>
+<li>Currently using 47-bit addresses (highest address of 0x7fffffffffff)</li>
+<li>Maximum stack size of 8MB on most machines<br><img src="/images/memory.png" width="80%">  </li>
+</ul>
+<h2 id="Vulnerablities"><a href="#Vulnerablities" class="headerlink" title="Vulnerablities"></a>Vulnerablities</h2><ol>
+<li>Buffer overflow<ul>
+<li>Triggered by functions manipulating strings of arbitrary length</li>
+<li><code>gets</code>, <code>strcpy</code>, <code>strcat</code>, <code>scanf</code>, <code>fscanf</code>, <code>sscanf</code></li>
+</ul>
+</li>
+<li>Return-oriented programming (ROT)<ul>
+<li>Make use of “gadgets” in text segment  </li>
+<li>Trigger with <code>ret</code> instruction<br><img src="/images/rop.png" width="80%">  </li>
+</ul>
+</li>
+</ol>
+<h2 id="Protection"><a href="#Protection" class="headerlink" title="Protection"></a>Protection</h2><ol>
+<li>Use routines limiting string lengths (user-level)</li>
+<li>Randomized stack offsets</li>
+<li>Nonexecutable code segments</li>
+<li>Stack canaries</li>
+</ol>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-12-16T13:35:44.000Z" title="2020-12-16T13:35:44.000Z">2020-12-16</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-12-17T04:19:37.157Z" title="2020-12-17T04:19:37.157Z">2020-12-17</time></span><span class="level-item"><a class="link-muted" href="/categories/CSAPP/">CSAPP</a></span><span class="level-item">a few seconds read (About 71 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/csapp-integer-and-float/index.html">CSAPP - Integer and Float</a></h1><div class="content"><h1 id="Integer-Representation"><a href="#Integer-Representation" class="headerlink" title="Integer Representation"></a>Integer Representation</h1><ul>
 <li><p>Data types</p>
 <ul>
 <li>char, short, int, long, float, double, pointer</li>
@@ -19,7 +197,7 @@
 <li>Big Endian: Sun, PPC Mac, Internet</li>
 <li>Little Endian: x86, ARM </li>
 </ul>
-<p><img src="/images/endian.png" width="80%"></p></div><a class="article-more button is-small is-size-7" href="/csapp-integer-and-float/index.html#more">Read more</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://octodex.github.com/images/justicetocat.jpg" alt="yupangzi"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">yupangzi</p><p class="is-size-6 is-block">Tongji University</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Shanghai, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Post</p><a href="/archives"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Category</p><a href="/categories"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/yupangzi18" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/yupangzi18"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/CSAPP/"><span class="level-start"><span class="level-item">CSAPP</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CSAPP/"><span class="tag">CSAPP</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Float/"><span class="tag">Float</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Integer/"><span class="tag">Integer</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-12-16T13:35:44.000Z">2020-12-16</time></p><p class="title"><a href="/csapp-integer-and-float/index.html">CSAPP - Integer and Float</a></p><p class="categories"><a href="/categories/CSAPP/">CSAPP</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2020/12/"><span class="level-start"><span class="level-item">December 2020</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 Yu Luo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+<p><img src="/images/endian.png" width="80%"></p></div><a class="article-more button is-small is-size-7" href="/csapp-integer-and-float/index.html#more">Read more</a></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="https://octodex.github.com/images/justicetocat.jpg" alt="yupangzi"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">yupangzi</p><p class="is-size-6 is-block">Tongji University</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Shanghai, China</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Category</p><a href="/categories"><p class="title">1</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/yupangzi18" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/yupangzi18"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/CSAPP/"><span class="level-start"><span class="level-item">CSAPP</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CSAPP/"><span class="tag">CSAPP</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Float/"><span class="tag">Float</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Integer/"><span class="tag">Integer</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-12-17T04:22:54.000Z">2020-12-17</time></p><p class="title"><a href="/csapp-machine-level-programming/index.html">CSAPP - Machine Level Programming</a></p><p class="categories"><a href="/categories/CSAPP/">CSAPP</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-12-16T13:35:44.000Z">2020-12-16</time></p><p class="title"><a href="/csapp-integer-and-float/index.html">CSAPP - Integer and Float</a></p><p class="categories"><a href="/categories/CSAPP/">CSAPP</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2020/12/"><span class="level-start"><span class="level-item">December 2020</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2020 Yu Luo</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
